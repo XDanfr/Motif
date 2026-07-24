@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Motif app icon concept. Fallback palette: teal / coral / cream. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Motif app icon</title>
+  <desc id="desc">A Material 3 Expressive wallpaper composition made from layered colour surfaces and a central abstract motif.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#063F46"/>
+      <stop offset="1" stop-color="#087F8C"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#D9FFF5"/>
+      <stop offset="1" stop-color="#A7E8DC"/>
+    </linearGradient>
+    <linearGradient id="coral" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFB59F"/>
+      <stop offset="1" stop-color="#F47762"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="22" stdDeviation="20" flood-color="#012A30" flood-opacity=".32"/>
+    </filter>
+    <clipPath id="iconClip">
+      <rect x="32" y="32" width="960" height="960" rx="236"/>
+    </clipPath>
+  </defs>
+
+  <!-- Transparent outside the rounded artwork so the icon remains genuinely rounded. -->
+  <g clip-path="url(#iconClip)">
+    <rect width="1024" height="1024" fill="url(#background)"/>
+
+    <!-- Expressive background forms: designed to remain recognisable when masked. -->
+    <circle cx="118" cy="166" r="220" fill="#0B9E9C" opacity=".55"/>
+    <circle cx="944" cy="884" r="248" fill="#F47762" opacity=".46"/>
+    <path d="M-100 790 C80 600 192 590 318 710 C436 822 476 1005 632 1082 L-100 1082Z" fill="#075C67" opacity=".9"/>
+    <path d="M700 -80 C858 34 1008 42 1110 -26 L1110 246 C1014 290 866 252 736 164 C638 98 620 -12 700 -80Z" fill="#F9D6C8" opacity=".38"/>
+
+    <!-- Offset wallpaper cards. -->
+    <g transform="translate(166 156) rotate(-9 346 346)">
+      <rect x="0" y="0" width="692" height="692" rx="154" fill="#032F36" opacity=".42"/>
+      <rect x="22" y="22" width="692" height="692" rx="154" fill="url(#paper)"/>
+      <circle cx="132" cy="126" r="74" fill="#0B9E9C"/>
+      <circle cx="132" cy="126" r="30" fill="#D9FFF5" opacity=".9"/>
+      <rect x="462" y="66" width="150" height="150" rx="54" fill="url(#coral)"/>
+      <path d="M70 520 C174 368 254 340 358 398 C438 442 510 490 648 418 L648 648 L70 648Z" fill="#087F8C" opacity=".78"/>
+      <path d="M84 574 C222 466 322 492 402 566 C454 614 518 640 638 592" fill="none" stroke="#F9D6C8" stroke-width="20" stroke-linecap="round" opacity=".9"/>
+    </g>
+
+    <!-- Central Motif: an interlocking, wallpaper-like shape. -->
+    <g transform="translate(512 512)">
+      <path d="M-30 -260 C-30 -328 52 -354 102 -308 L226 -194 C274 -150 274 -78 226 -34 L126 58 L226 150 C274 194 274 266 226 310 L102 424 C52 470 -30 444 -30 376 L-30 224 L-146 330 C-196 376 -278 342 -278 274 L-278 136 C-278 96 -260 64 -230 42 L-100 -58 L-230 -158 C-260 -180 -278 -212 -278 -252 L-278 -390 C-278 -458 -196 -484 -146 -438 L-30 -332Z" transform="scale(.48)" fill="#022E35" opacity=".30"/>
+      <path d="M-30 -260 C-30 -328 52 -354 102 -308 L226 -194 C274 -150 274 -78 226 -34 L126 58 L226 150 C274 194 274 266 226 310 L102 424 C52 470 -30 444 -30 376 L-30 224 L-146 330 C-196 376 -278 342 -278 274 L-278 136 C-278 96 -260 64 -230 42 L-100 -58 L-230 -158 C-260 -180 -278 -212 -278 -252 L-278 -390 C-278 -458 -196 -484 -146 -438 L-30 -332Z" transform="scale(.48)" fill="url(#coral)" stroke="#FFF4ED" stroke-width="18" stroke-linejoin="round"/>
+      <path d="M-30 -260 C-30 -328 52 -354 102 -308 L226 -194 C274 -150 274 -78 226 -34 L126 58 L226 150 C274 194 274 266 226 310 L102 424 C52 470 -30 444 -30 376 L-30 224 L-146 330 C-196 376 -278 342 -278 274 L-278 136 C-278 96 -260 64 -230 42 L-100 -58 L-230 -158 C-260 -180 -278 -212 -278 -252 L-278 -390 C-278 -458 -196 -484 -146 -438 L-30 -332Z" transform="translate(34 26) scale(.48)" fill="none" stroke="#D9FFF5" stroke-opacity=".8" stroke-width="16" stroke-linejoin="round"/>
+      <circle cx="0" cy="0" r="30" fill="#063F46"/>
+      <circle cx="0" cy="0" r="14" fill="#D9FFF5"/>
+    </g>
+  </g>
+
+  <!-- A quiet outer edge improves masking on launchers that use near-square crops. -->
+  <rect x="32" y="32" width="960" height="960" rx="236" fill="none" stroke="#D9FFF5" stroke-opacity=".15" stroke-width="8"/>
+</svg>
