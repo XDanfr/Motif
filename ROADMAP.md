@@ -5,15 +5,12 @@
 - [x] Name and project concept
 - [x] Define the first feature roadmap
 - [X] Choose final repository name and visual identity
-- [ ] Create initial UI mockups
-- [ ] Decide the first Material colour scheme
-- [ ] Review Material 3 Expressive assets and interaction patterns
 
 ## Phase 1: Android foundation
 
 - [ ] Create the Kotlin/Jetpack Compose Android project
 - [ ] Set minimum and target Android versions
-- [ ] Add a simple Material 3 Expressive-inspired theme
+- [ ] Add a simple Material 3 Expressive theme
 - [ ] Establish project architecture and state model
 - [ ] Add light/dark system theme support
 - [ ] Add basic navigation between Home and Editor
