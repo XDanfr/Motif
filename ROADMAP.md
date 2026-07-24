@@ -10,9 +10,9 @@
 
 - [X] Create the Kotlin/Jetpack Compose Android project
 - [X] Set minimum and target Android versions
-- [ ] Add a simple Material 3 Expressive theme
-- [ ] Add light/dark system theme support
-- [ ] Add basic navigation between Home and Editor
+- [X] Add a simple Material 3 Expressive theme
+- [X] Add light/dark system theme support (theme switch will also be in settings)
+- [X] Add basic navigation between Home and Editor
 
 ## Phase 2: First usable editor
 
