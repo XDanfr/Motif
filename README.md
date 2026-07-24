@@ -1,8 +1,14 @@
-# Motif
+<p align="center">
+  <img src="motif.png" width="96" height="96" alt="motif Logo" />
+</p>
 
-An Android app for creating expressive, device-aware Material 3 wallpapers.
+<h1 align="center">Motif</h1>
 
-Material Wallpaper Studio lets users generate a composition from shapes, colours and images, then refine it directly on a canvas. Objects can be moved, resized, rotated, recoloured, layered and saved as reusable presets.
+<p align="center">
+  <i>An Android app for creating expressive, device-aware Material 3 wallpapers.</i>
+</p>
+
+Motif lets users generate a composition from shapes, colours and images, then refine it directly on a canvas. Objects can be moved, resized, rotated, recoloured, layered and saved as reusable presets.
 
 ## Status
 
