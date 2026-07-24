@@ -12,7 +12,7 @@ Motif lets users generate a composition from shapes, colours and images, then re
 
 ## Status
 
-Pre-development. Application does not actually do anything right now.
+In early development. **Application does not actually do anything right now.**
 
 ## Goals
 
