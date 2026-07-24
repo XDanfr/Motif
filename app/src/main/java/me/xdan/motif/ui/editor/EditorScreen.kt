@@ -1,5 +1,8 @@
 package me.xdan.motif.ui.editor
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,9 +34,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import me.xdan.motif.ui.theme.MotifTheme
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun EditorScreen(
+    origin: String,
     onNavigateBack: () -> Unit,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -53,7 +60,11 @@ fun EditorScreen(
                 .padding(horizontal = 24.dp, vertical = 16.dp),
             contentAlignment = Alignment.Center
         ) {
-            WallpaperCanvas()
+            WallpaperCanvas(
+                origin = origin,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedVisibilityScope = animatedVisibilityScope
+            )
         }
     }
 }
@@ -93,12 +104,21 @@ private fun EditorTopBar(onNavigateBack: () -> Unit) {
 }
 
 @Composable
-private fun WallpaperCanvas() {
+private fun WallpaperCanvas(
+    origin: String,
+    sharedTransitionScope: SharedTransitionScope?,
+    animatedVisibilityScope: AnimatedVisibilityScope?
+) {
     Surface(
         modifier = Modifier
             .fillMaxWidth(0.72f)
             .widthIn(max = 320.dp)
-            .aspectRatio(9f / 19.5f),
+            .aspectRatio(9f / 19.5f)
+            .wallpaperSharedBounds(
+                key = origin,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedVisibilityScope = animatedVisibilityScope
+            ),
         shape = RoundedCornerShape(28.dp),
         color = MaterialTheme.colorScheme.primary,
         shadowElevation = 12.dp
@@ -139,6 +159,25 @@ private fun WallpaperCanvas() {
                 )
             ) {}
         }
+    }
+}
+
+@OptIn(ExperimentalSharedTransitionApi::class)
+@Composable
+private fun Modifier.wallpaperSharedBounds(
+    key: String,
+    sharedTransitionScope: SharedTransitionScope?,
+    animatedVisibilityScope: AnimatedVisibilityScope?
+): Modifier {
+    if (sharedTransitionScope == null || animatedVisibilityScope == null) {
+        return this
+    }
+
+    return with(sharedTransitionScope) {
+        this@wallpaperSharedBounds.sharedBounds(
+            sharedContentState = rememberSharedContentState(key = "wallpaper-$key"),
+            animatedVisibilityScope = animatedVisibilityScope
+        )
     }
 }
 
@@ -205,6 +244,9 @@ private fun ToolButton(
 @Composable
 private fun EditorScreenPreview() {
     MotifTheme {
-        EditorScreen(onNavigateBack = {})
+        EditorScreen(
+            origin = "create",
+            onNavigateBack = {}
+        )
     }
 }

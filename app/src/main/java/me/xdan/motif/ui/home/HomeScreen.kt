@@ -1,5 +1,8 @@
 package me.xdan.motif.ui.home
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,20 +39,23 @@ import androidx.compose.ui.unit.dp
 import me.xdan.motif.ui.theme.MotifTheme
 
 private data class WallpaperPreview(
+    val id: String,
     val name: String,
     val variant: Int
 )
 
 private val sampleWallpapers = listOf(
-    WallpaperPreview("Tide pool", 0),
-    WallpaperPreview("Soft orbit", 1),
-    WallpaperPreview("Coral cut", 2)
+    WallpaperPreview("tide-pool", "Tide pool", 0),
+    WallpaperPreview("soft-orbit", "Soft orbit", 1),
+    WallpaperPreview("coral-cut", "Coral cut", 2)
 )
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun HomeScreen(
-    onCreateWallpaper: () -> Unit,
-    onOpenWallpaper: () -> Unit,
+    onOpenEditor: (origin: String) -> Unit,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -66,8 +72,10 @@ fun HomeScreen(
             item { MotifHeader() }
             item {
                 CreateHero(
-                    onCreateWallpaper = onCreateWallpaper,
-                    onRandomWallpaper = onCreateWallpaper
+                    onCreateWallpaper = { onOpenEditor("create") },
+                    onRandomWallpaper = { onOpenEditor("surprise") },
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedVisibilityScope = animatedVisibilityScope
                 )
             }
             item {
@@ -75,7 +83,10 @@ fun HomeScreen(
                     title = "Saved",
                     subtitle = "Your latest designs",
                     wallpapers = sampleWallpapers,
-                    onOpenWallpaper = onOpenWallpaper
+                    originPrefix = "saved",
+                    onOpenEditor = onOpenEditor,
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedVisibilityScope = animatedVisibilityScope
                 )
             }
             item {
@@ -83,7 +94,10 @@ fun HomeScreen(
                     title = "Featured by Motif",
                     subtitle = "Included offline",
                     wallpapers = sampleWallpapers.reversed(),
-                    onOpenWallpaper = onOpenWallpaper
+                    originPrefix = "featured",
+                    onOpenEditor = onOpenEditor,
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedVisibilityScope = animatedVisibilityScope
                 )
             }
         }
@@ -127,7 +141,9 @@ private fun MotifHeader() {
 @Composable
 private fun CreateHero(
     onCreateWallpaper: () -> Unit,
-    onRandomWallpaper: () -> Unit
+    onRandomWallpaper: () -> Unit,
+    sharedTransitionScope: SharedTransitionScope?,
+    animatedVisibilityScope: AnimatedVisibilityScope?
 ) {
     Surface(
         modifier = Modifier
@@ -167,12 +183,22 @@ private fun CreateHero(
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     Button(
                         onClick = onCreateWallpaper,
+                        modifier = Modifier.wallpaperSharedBounds(
+                            key = "create",
+                            sharedTransitionScope = sharedTransitionScope,
+                            animatedVisibilityScope = animatedVisibilityScope
+                        ),
                         shape = RoundedCornerShape(22.dp, 22.dp, 22.dp, 8.dp)
                     ) {
                         Text("Create wallpaper")
                     }
                     FilledTonalButton(
                         onClick = onRandomWallpaper,
+                        modifier = Modifier.wallpaperSharedBounds(
+                            key = "surprise",
+                            sharedTransitionScope = sharedTransitionScope,
+                            animatedVisibilityScope = animatedVisibilityScope
+                        ),
                         shape = CircleShape
                     ) {
                         Text("Surprise me")
@@ -188,7 +214,10 @@ private fun WallpaperSection(
     title: String,
     subtitle: String,
     wallpapers: List<WallpaperPreview>,
-    onOpenWallpaper: () -> Unit
+    originPrefix: String,
+    onOpenEditor: (origin: String) -> Unit,
+    sharedTransitionScope: SharedTransitionScope?,
+    animatedVisibilityScope: AnimatedVisibilityScope?
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Row(
@@ -210,7 +239,10 @@ private fun WallpaperSection(
             items(wallpapers) { wallpaper ->
                 WallpaperCard(
                     wallpaper = wallpaper,
-                    onClick = onOpenWallpaper
+                    onClick = { onOpenEditor("$originPrefix-${wallpaper.id}") },
+                    sharedTransitionKey = "$originPrefix-${wallpaper.id}",
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedVisibilityScope = animatedVisibilityScope
                 )
             }
         }
@@ -220,13 +252,21 @@ private fun WallpaperSection(
 @Composable
 private fun WallpaperCard(
     wallpaper: WallpaperPreview,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    sharedTransitionKey: String,
+    sharedTransitionScope: SharedTransitionScope?,
+    animatedVisibilityScope: AnimatedVisibilityScope?
 ) {
     Surface(
         onClick = onClick,
         modifier = Modifier
             .width(132.dp)
-            .height(192.dp),
+            .height(192.dp)
+            .wallpaperSharedBounds(
+                key = sharedTransitionKey,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedVisibilityScope = animatedVisibilityScope
+            ),
         shape = when (wallpaper.variant) {
             1 -> RoundedCornerShape(32.dp, 10.dp, 32.dp, 32.dp)
             2 -> RoundedCornerShape(10.dp, 32.dp, 32.dp, 32.dp)
@@ -270,13 +310,31 @@ private fun WallpaperCard(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
+@Composable
+private fun Modifier.wallpaperSharedBounds(
+    key: String,
+    sharedTransitionScope: SharedTransitionScope?,
+    animatedVisibilityScope: AnimatedVisibilityScope?
+): Modifier {
+    if (sharedTransitionScope == null || animatedVisibilityScope == null) {
+        return this
+    }
+
+    return with(sharedTransitionScope) {
+        this@wallpaperSharedBounds.sharedBounds(
+            sharedContentState = rememberSharedContentState(key = "wallpaper-$key"),
+            animatedVisibilityScope = animatedVisibilityScope
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun HomeScreenPreview() {
     MotifTheme {
         HomeScreen(
-            onCreateWallpaper = {},
-            onOpenWallpaper = {}
+            onOpenEditor = {}
         )
     }
 }
