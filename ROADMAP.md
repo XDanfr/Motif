@@ -8,10 +8,9 @@
 
 ## Phase 1: Android foundation
 
-- [ ] Create the Kotlin/Jetpack Compose Android project
-- [ ] Set minimum and target Android versions
+- [X] Create the Kotlin/Jetpack Compose Android project
+- [X] Set minimum and target Android versions
 - [ ] Add a simple Material 3 Expressive theme
-- [ ] Establish project architecture and state model
 - [ ] Add light/dark system theme support
 - [ ] Add basic navigation between Home and Editor
 
